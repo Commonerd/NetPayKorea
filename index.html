@@ -8,7 +8,7 @@
       content="U-GWwZOKUY-FqRJYQu4ealLEaLnFK4WTKgDI7SCbS3E"
     />
     <!-- SEO 최적화를 위한 제목 및 메타 태그 -->
-    <title>
+    <title id="pageTitle">
       한국 연봉/월급 실수령액 계산기 | NetPayKorea - 4대보험 & 소득세 자동 계산
     </title>
     <meta
@@ -58,20 +58,40 @@
   <body
     class="min-h-screen flex flex-col items-center py-8 px-4 sm:px-6 lg:px-8"
   >
+    <!-- Language Toggle -->
+    <div class="flex justify-end w-full max-w-4xl mb-4">
+      <button
+        id="langKoBtn"
+        class="bg-blue-500 text-white px-4 py-2 rounded-l-md font-semibold text-sm mr-px"
+      >
+        한국어
+      </button>
+      <button
+        id="langEnBtn"
+        class="bg-gray-300 text-gray-700 px-4 py-2 rounded-r-md font-semibold text-sm"
+      >
+        English
+      </button>
+    </div>
+
     <!-- 주요 콘텐츠 영역 -->
     <main
       class="w-full max-w-4xl bg-white rounded-lg shadow-xl p-6 sm:p-8 lg:p-10 mb-8"
     >
       <h1
         class="text-3xl sm:text-4xl font-extrabold text-center text-blue-700 mb-6 leading-tight"
+        id="mainTitle"
       >
         한국 연봉/월급 실수령액 계산기
       </h1>
-      <p class="text-center text-gray-600 mb-8 sm:mb-10 text-lg">
+      <p class="text-center text-gray-600 mb-8 sm:mb-10 text-lg" id="subTitle">
         대한민국 4대 보험 및 소득세를 반영한 정확한 실수령액을 간편하게
         확인하고,
-        <strong class="text-blue-600">다양한 시나리오를 저장 및 비교</strong>해
-        보세요!
+        <strong class="text-blue-600"
+          ><span id="scenarioStrongText"
+            >다양한 시나리오를 저장 및 비교</span
+          ></strong
+        >해 보세요!
       </p>
 
       <!-- 계산기 섹션 -->
@@ -79,13 +99,52 @@
         <div class="space-y-6">
           <h2
             class="text-2xl font-bold text-gray-800 border-b-2 border-blue-200 pb-3 mb-4"
+            id="inputSectionTitle"
           >
             입력 정보
           </h2>
+
+          <!-- 사용자 유형 선택 -->
+          <div class="mb-4">
+            <label
+              class="block text-gray-700 text-sm font-semibold mb-2"
+              id="userTypeLabel"
+              >당신은 누구인가요?</label
+            >
+            <div class="flex gap-4">
+              <label class="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="userType"
+                  value="salaried"
+                  checked
+                  class="form-radio h-5 w-5 text-blue-600"
+                  id="userTypeSalaried"
+                />
+                <span class="ml-2 text-gray-700 text-lg" id="salariedOption"
+                  >근로소득자</span
+                >
+              </label>
+              <label class="inline-flex items-center">
+                <input
+                  type="radio"
+                  name="userType"
+                  value="self-employed"
+                  class="form-radio h-5 w-5 text-blue-600"
+                  id="userTypeSelfEmployed"
+                />
+                <span class="ml-2 text-gray-700 text-lg" id="selfEmployedOption"
+                  >사업소득자</span
+                >
+              </label>
+            </div>
+          </div>
+
           <div>
             <label
               for="annualSalary"
               class="block text-gray-700 text-sm font-semibold mb-2"
+              id="annualSalaryLabel"
               >연봉 (세전, 원)</label
             >
             <input
@@ -97,10 +156,13 @@
               step="10000"
             />
           </div>
-          <div>
+
+          <!-- 비과세 소득 (근로소득자용) -->
+          <div id="nonTaxableIncomeGroup">
             <label
               for="nonTaxableIncome"
               class="block text-gray-700 text-sm font-semibold mb-2"
+              id="nonTaxableIncomeLabel"
               >비과세 소득 (월, 원)</label
             >
             <input
@@ -111,15 +173,39 @@
               min="0"
               step="10000"
             />
-            <p class="text-xs text-gray-500 mt-1">
+            <p class="text-xs text-gray-500 mt-1" id="nonTaxableIncomeDesc">
               예: 식대 (월 20만원까지), 자가운전보조금 등. 비과세 항목은 세금이
               부과되지 않습니다.
             </p>
           </div>
+
+          <!-- 필요경비율 (사업소득자용) -->
+          <div id="businessExpenseRatioGroup" class="hidden">
+            <label
+              for="businessExpenseRatio"
+              class="block text-gray-700 text-sm font-semibold mb-2"
+              id="businessExpenseRatioLabel"
+              >필요경비율 (%)</label
+            >
+            <input
+              type="number"
+              id="businessExpenseRatio"
+              value="0"
+              class="w-full p-3 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 text-lg"
+              min="0"
+              max="100"
+              step="1"
+            />
+            <p class="text-xs text-gray-500 mt-1" id="businessExpenseRatioDesc">
+              사업소득의 필요경비를 비율로 입력하세요 (예: 50 입력 시 50% 공제).
+            </p>
+          </div>
+
           <div>
             <label
               for="dependents"
               class="block text-gray-700 text-sm font-semibold mb-2"
+              id="dependentsLabel"
               >부양가족수 (본인 포함)</label
             >
             <input
@@ -130,7 +216,7 @@
               min="1"
               max="10"
             />
-            <p class="text-xs text-gray-500 mt-1">
+            <p class="text-xs text-gray-500 mt-1" id="dependentsDesc">
               소득세 계산 시 적용됩니다. 일반적으로 본인 포함입니다.
             </p>
           </div>
@@ -145,11 +231,12 @@
         <div class="space-y-6">
           <h2
             class="text-2xl font-bold text-gray-800 border-b-2 border-blue-200 pb-3 mb-4"
+            id="resultSectionTitle"
           >
             계산 결과 (월 기준)
           </h2>
           <div class="bg-blue-50 p-4 rounded-md shadow-inner">
-            <p class="text-gray-700 text-sm mb-2">
+            <p class="text-gray-700 text-sm mb-2" id="displayGrossLabel">
               총 월 급여 (세전):
               <span
                 id="displayMonthlyGross"
@@ -157,7 +244,7 @@
                 >0원</span
               >
             </p>
-            <p class="text-gray-700 text-sm mb-2">
+            <p class="text-gray-700 text-sm mb-2" id="displayTaxableLabel">
               월 과세 대상 급여:
               <span
                 id="displayMonthlyTaxable"
@@ -165,7 +252,7 @@
                 >0원</span
               >
             </p>
-            <p class="text-gray-700 text-sm">
+            <p class="text-gray-700 text-sm" id="displayNonTaxableLabel">
               월 비과세 소득:
               <span
                 id="displayMonthlyNonTaxable"
@@ -173,10 +260,21 @@
                 >0원</span
               >
             </p>
+            <p
+              class="text-gray-700 text-sm hidden"
+              id="displayNetBusinessIncomeLabel"
+            >
+              월 순수 사업소득 (경비 공제 후):
+              <span
+                id="displayNetBusinessIncome"
+                class="font-bold text-base text-blue-800"
+                >0원</span
+              >
+            </p>
           </div>
 
           <div class="bg-gray-50 p-4 rounded-md shadow-inner">
-            <p class="text-gray-700 text-sm mb-2">
+            <p class="text-gray-700 text-sm mb-2" id="npLabel">
               국민연금:
               <span
                 id="displayNationalPension"
@@ -184,7 +282,7 @@
                 >0원</span
               >
             </p>
-            <p class="text-gray-700 text-sm mb-2">
+            <p class="text-gray-700 text-sm mb-2" id="hiLabel">
               건강보험:
               <span
                 id="displayHealthInsurance"
@@ -192,7 +290,7 @@
                 >0원</span
               >
             </p>
-            <p class="text-gray-700 text-sm mb-2">
+            <p class="text-gray-700 text-sm mb-2" id="ltcLabel">
               장기요양보험:
               <span
                 id="displayLongTermCare"
@@ -200,7 +298,7 @@
                 >0원</span
               >
             </p>
-            <p class="text-gray-700 text-sm mb-2">
+            <p class="text-gray-700 text-sm mb-2" id="eiLabel">
               고용보험:
               <span
                 id="displayEmploymentInsurance"
@@ -208,7 +306,7 @@
                 >0원</span
               >
             </p>
-            <p class="text-gray-700 text-sm mb-2">
+            <p class="text-gray-700 text-sm mb-2" id="itLabel">
               소득세:
               <span
                 id="displayIncomeTax"
@@ -216,7 +314,7 @@
                 >0원</span
               >
             </p>
-            <p class="text-gray-700 text-sm">
+            <p class="text-gray-700 text-sm" id="litLabel">
               지방소득세:
               <span
                 id="displayLocalIncomeTax"
@@ -229,7 +327,7 @@
           <div
             class="bg-green-100 p-4 rounded-md shadow-md border-l-4 border-green-500"
           >
-            <p class="text-xl font-bold text-green-800">
+            <p class="text-xl font-bold text-green-800" id="netPayLabel">
               월 예상 실수령액:
               <span
                 id="displayNetPay"
@@ -245,10 +343,11 @@
       <section class="mt-12 bg-gray-50 p-6 rounded-lg shadow-inner">
         <h2
           class="text-2xl font-bold text-gray-800 border-b-2 border-gray-200 pb-3 mb-4"
+          id="scenarioSectionTitle"
         >
           나의 시나리오 저장 및 비교
         </h2>
-        <p class="text-gray-600 mb-4">
+        <p class="text-gray-600 mb-4" id="scenarioDescription">
           현재 계산된 결과를 시나리오로 저장하고, 필요할 때 불러와 비교해
           보세요. 브라우저에 저장됩니다.
         </p>
@@ -278,10 +377,11 @@
       <section class="mt-12 p-6 bg-blue-50 rounded-lg shadow-md">
         <h2
           class="text-2xl font-bold text-gray-800 border-b-2 border-blue-200 pb-3 mb-4"
+          id="whyNetPayKoreaTitle"
         >
           NetPayKorea가 특별한 이유
         </h2>
-        <p class="text-gray-700 mb-4 leading-relaxed">
+        <p class="text-gray-700 mb-4 leading-relaxed" id="whyNetPayKoreaP1">
           시중에 많은 연봉/월급 실수령액 계산기가 있지만, NetPayKorea는 여러분의
           <strong class="text-blue-600">복잡한 고민을 해결</strong>하기 위해
           태어났습니다. 단순히 한 번 계산하고 마는 것이 아니라,
@@ -290,7 +390,7 @@
           1천만원을 받으면 세금은 얼마나 늘어날까?' 와 같은 질문에 대한 답을
           <strong class="text-blue-600">즉시 비교</strong>할 수 있습니다.
         </p>
-        <p class="text-gray-700 mb-4 leading-relaxed">
+        <p class="text-gray-700 mb-4 leading-relaxed" id="whyNetPayKoreaP2">
           복잡한 세법이나 4대 보험 요율을 일일이 찾아볼 필요 없이, 필요한 정보를
           입력하기만 하면
           <strong class="text-blue-600"
@@ -304,10 +404,11 @@
 
         <h3
           class="text-xl font-bold text-gray-800 border-b border-gray-200 pb-2 mb-3 mt-6"
+          id="deductionInfoTitle"
         >
           4대 보험 및 세금 안내 (2024년 기준)
         </h3>
-        <p class="text-gray-700 mb-2 leading-relaxed">
+        <p class="text-gray-700 mb-2 leading-relaxed" id="npInfo">
           ✅ <strong class="text-red-600">국민연금:</strong> 월 과세소득의 4.5%
           (사업장 가입자의 경우 사용자 4.5% + 본인 4.5% = 총 9%. 계산기는 본인
           부담분만 적용) <br /><span class="text-sm text-gray-500"
@@ -315,35 +416,48 @@
             동일하게 적용됩니다.</span
           >
         </p>
-        <p class="text-gray-700 mb-2 leading-relaxed">
+        <p class="text-gray-700 mb-2 leading-relaxed" id="hiInfo">
           ✅ <strong class="text-red-600">건강보험:</strong> 월 과세소득의
           3.545% (사업장 가입자의 경우 사용자 3.545% + 본인 3.545% = 총 7.09%)
         </p>
-        <p class="text-gray-700 mb-2 leading-relaxed">
+        <p class="text-gray-700 mb-2 leading-relaxed" id="ltcInfo">
           ✅ <strong class="text-red-600">장기요양보험:</strong> 건강보험료의
           12.95% (건강보험료에 비례하여 부과)
         </p>
-        <p class="text-gray-700 mb-2 leading-relaxed">
+        <p class="text-gray-700 mb-2 leading-relaxed" id="eiInfo">
           ✅ <strong class="text-red-600">고용보험:</strong> 월 과세소득의 0.8%
           (실업급여 보험료율, 사업장 가입자 기준)
         </p>
-        <p class="text-gray-700 mb-2 leading-relaxed">
-          ✅ <strong class="text-red-600">소득세:</strong> 국세청 간이세액표
-          기준 적용 (부양가족수 및 소득 구간별 차등 적용) <br /><span
+        <p class="text-gray-700 mb-2 leading-relaxed" id="itSalariedInfo">
+          ✅ <strong class="text-red-600">소득세 (근로소득):</strong> 국세청
+          간이세액표 기준 적용 (부양가족수 및 소득 구간별 차등 적용)<br /><span
             class="text-sm text-gray-500"
             >※ 본 계산기는 복잡한 간이세액표를 최대한 단순화하여 적용합니다.
             실제 세금과 차이가 있을 수 있습니다. 정확한 세금은 국세청 자료를
             참고하세요.</span
           >
         </p>
-        <p class="text-gray-700 mb-2 leading-relaxed">
+        <p
+          class="text-gray-700 mb-2 leading-relaxed hidden"
+          id="itSelfEmployedInfo"
+        >
+          ✅
+          <strong class="text-red-600">소득세 (사업소득):</strong> 사업소득세는
+          종합소득세율이 적용되며, 필요경비 공제 및 부양가족 수에 따른
+          소득공제가 이루어집니다. 본 계산기는 간이화된 로직을 따르며, 실제
+          세금과 차이가 있을 수 있습니다.
+        </p>
+        <p class="text-gray-700 mb-2 leading-relaxed" id="litInfo">
           ✅ <strong class="text-red-600">지방소득세:</strong> 소득세의 10%
         </p>
       </section>
 
       <!-- Google AdSense 광고 영역 (수익화 고려) -->
       <div class="mt-12 text-center bg-gray-100 p-6 rounded-lg shadow-inner">
-        <p class="text-gray-600 text-lg font-semibold mb-4">
+        <p
+          class="text-gray-600 text-lg font-semibold mb-4"
+          id="adPlaceholderText"
+        >
           여기에 광고가 표시됩니다 (Google AdSense)
         </p>
         <div
@@ -357,8 +471,8 @@
 
     <!-- 푸터 -->
     <footer class="mt-8 text-center text-gray-500 text-sm">
-      <p>&copy; 2024 NetPayKorea. 모든 권리 보유.</p>
-      <p>
+      <p id="footerCopyright">&copy; 2024 NetPayKorea. 모든 권리 보유.</p>
+      <p id="footerDisclaimer">
         본 계산 결과는 추정치이며, 실제와 다를 수 있습니다. 정확한 정보는 관련
         기관을 통해 확인해주세요.
       </p>
@@ -394,9 +508,13 @@
       document.addEventListener("DOMContentLoaded", () => {
         // DOM 요소 참조
         const annualSalaryInput = document.getElementById("annualSalary");
+        const annualSalaryLabel = document.getElementById("annualSalaryLabel");
         const nonTaxableIncomeInput =
           document.getElementById("nonTaxableIncome");
         const dependentsInput = document.getElementById("dependents");
+        const businessExpenseRatioInput = document.getElementById(
+          "businessExpenseRatio"
+        );
         const calculateBtn = document.getElementById("calculateBtn");
 
         const displayMonthlyGross = document.getElementById(
@@ -432,19 +550,51 @@
         const noScenariosMessage =
           document.getElementById("noScenariosMessage");
 
-        // --- 2024년 기준 상수 (예시 요율) ---
-        const NATIONAL_PENSION_RATE = 0.045; // 국민연금 본인 부담분 (총 9%)
-        const HEALTH_INSURANCE_RATE = 0.03545; // 건강보험 본인 부담분 (총 7.09%)
-        const LONG_TERM_CARE_RATE_OF_HEALTH_INSURANCE = 0.1295; // 장기요양보험 요율 (건강보험료의 12.95%)
-        const EMPLOYMENT_INSURANCE_RATE = 0.008; // 고용보험 실업급여 요율 (본인 부담분)
+        const userTypeSalaried = document.getElementById("userTypeSalaried");
+        const userTypeSelfEmployed = document.getElementById(
+          "userTypeSelfEmployed"
+        );
+        const nonTaxableIncomeGroup = document.getElementById(
+          "nonTaxableIncomeGroup"
+        );
+        const businessExpenseRatioGroup = document.getElementById(
+          "businessExpenseRatioGroup"
+        );
+        const displayGrossLabel = document.getElementById("displayGrossLabel");
+        const displayTaxableLabel = document.getElementById(
+          "displayTaxableLabel"
+        );
+        const displayNonTaxableLabel = document.getElementById(
+          "displayNonTaxableLabel"
+        );
+        const displayNetBusinessIncomeLabel = document.getElementById(
+          "displayNetBusinessIncomeLabel"
+        );
 
-        // 간이 소득세 테이블 (데모를 위한 근사치)
-        // 이 테이블은 실제 국세청 간이세액표의 복잡성을 완전히 반영하지 않습니다.
-        // 실제 서비스에서는 더 정교한 세금 테이블 구현이 필요합니다.
-        // 형식: { min: 월 과세소득 최소값, max: 월 과세소득 최대값, taxRates: [부양가족 1명일 때 세금, 2명일 때 세금, ...] }
-        // `taxRates` 배열의 인덱스는 (부양가족수 - 1)에 해당합니다.
-        // 예: taxRates[0]은 부양가족 1명 (본인만)일 때의 세금, taxRates[1]은 2명일 때 등.
-        const INCOME_TAX_TABLE = [
+        const langKoBtn = document.getElementById("langKoBtn");
+        const langEnBtn = document.getElementById("langEnBtn");
+        const htmlTag = document.querySelector("html");
+
+        let currentUserType = "salaried"; // Default user type
+
+        // --- 2024년 기준 상수 (예시 요율) ---
+        // 근로소득자 4대 보험 요율 (본인 부담분)
+        const NATIONAL_PENSION_RATE_SALARIED = 0.045;
+        const HEALTH_INSURANCE_RATE_SALARIED = 0.03545;
+        const EMPLOYMENT_INSURANCE_RATE_SALARIED = 0.008;
+
+        // 사업소득자 4대 보험 요율 (전체 부담분, 지역가입자 기준 단순화)
+        const NATIONAL_PENSION_RATE_SELF_EMPLOYED = 0.09; // 본인 부담 9%
+        const HEALTH_INSURANCE_RATE_SELF_EMPLOYED = 0.0709; // 본인 부담 7.09%
+        const EMPLOYMENT_INSURANCE_RATE_SELF_EMPLOYED = 0; // 사업소득자는 원칙적으로 고용보험 가입 의무 없음
+
+        const LONG_TERM_CARE_RATE_OF_HEALTH_INSURANCE = 0.1295; // 장기요양보험 요율 (건강보험료의 12.95%)
+
+        // 국민연금 기준소득월액 상한액 (2024년 기준)
+        const NATIONAL_PENSION_MAX_MONTHLY_BASE = 5900000;
+
+        // 근로소득자 간이 소득세 테이블 (데모를 위한 근사치)
+        const SALARIED_INCOME_TAX_TABLE = [
           { min: 0, max: 2000000, taxRates: [1000, 0, 0, 0, 0, 0] },
           {
             min: 2000001,
@@ -473,27 +623,36 @@
           },
         ];
 
+        // 사업소득자 연간 종합소득세율 (순수 사업소득 기준, 단순화된 예시)
+        const SELF_EMPLOYED_ANNUAL_INCOME_TAX_RATES = [
+          { min: 0, max: 14000000, rate: 0.06 },
+          { min: 14000001, max: 50000000, rate: 0.15 },
+          { min: 50000001, max: 88000000, rate: 0.24 },
+          { min: 88000001, max: 150000000, rate: 0.35 },
+          { min: 150000001, max: 300000000, rate: 0.38 },
+          { min: 300000001, max: 500000000, rate: 0.4 },
+          { min: 500000001, max: Infinity, rate: 0.42 },
+        ];
+
         /**
-         * 월 과세 소득과 부양가족수에 따라 예상 월 소득세를 계산합니다.
+         * 월 과세 소득과 부양가족수에 따라 예상 월 소득세를 계산합니다 (근로소득자용).
          * @param {number} monthlyTaxableIncome - 과세 대상 월 소득.
          * @param {number} dependents - 부양가족수 (본인 포함).
          * @returns {number} 예상 월 소득세.
          */
-        function getIncomeTax(monthlyTaxableIncome, dependents) {
+        function getSalariedIncomeTax(monthlyTaxableIncome, dependents) {
           let incomeTax = 0;
-          // 부양가족수를 taxRates 배열 인덱스에 맞게 조정 (예: 1명 -> 인덱스 0)
-          // 단순화된 테이블에 대한 범위 초과 방지를 위해 부양가족수를 제한합니다.
           const effectiveDependentsIndex = Math.max(
             0,
-            Math.min(dependents, INCOME_TAX_TABLE[0].taxRates.length) - 1
+            Math.min(dependents, SALARIED_INCOME_TAX_TABLE[0].taxRates.length) -
+              1
           );
 
-          for (const range of INCOME_TAX_TABLE) {
+          for (const range of SALARIED_INCOME_TAX_TABLE) {
             if (
               monthlyTaxableIncome >= range.min &&
               monthlyTaxableIncome <= range.max
             ) {
-              // 해당 부양가족수 인덱스에 해당하는 세금율 적용
               incomeTax = range.taxRates[effectiveDependentsIndex] || 0;
               break;
             }
@@ -502,11 +661,51 @@
         }
 
         /**
+         * 연간 순수 사업소득에 따라 예상 월 소득세를 계산합니다 (사업소득자용).
+         * 본 계산은 매우 단순화된 형태이며, 실제 종합소득세 계산은 복잡합니다.
+         * @param {number} annualNetBusinessIncome - 연간 순수 사업소득 (수입 - 경비).
+         * @returns {number} 예상 월 소득세.
+         */
+        function getSelfEmployedIncomeTax(annualNetBusinessIncome) {
+          let annualIncomeTax = 0;
+          // 소득 구간별 누진세율 적용 (단순화)
+          for (const range of SELF_EMPLOYED_ANNUAL_INCOME_TAX_RATES) {
+            if (annualNetBusinessIncome >= range.min) {
+              // 구간별 세액 계산 방식 (초과 누진)
+              const taxableInThisRange =
+                Math.min(annualNetBusinessIncome, range.max) - range.min;
+              annualIncomeTax += taxableInThisRange * range.rate;
+            } else if (annualNetBusinessIncome < range.min) {
+              break; // 이미 해당 구간을 벗어났으면 종료
+            }
+          }
+          // 부양가족 수에 따른 기본 공제 (매우 단순화된 예시)
+          const basicDeductionPerDependent = 1500000; // 연간 1인당 기본 공제액 (가정)
+          let totalDeduction =
+            dependentsInput.value * basicDeductionPerDependent;
+          annualIncomeTax = Math.max(
+            0,
+            annualIncomeTax -
+              totalDeduction * SELF_EMPLOYED_ANNUAL_INCOME_TAX_RATES[0].rate
+          ); // 가장 낮은 세율로 공제액 효과 반영 (단순화)
+          annualIncomeTax = Math.max(0, annualIncomeTax); // 세금은 음수가 될 수 없음
+
+          return annualIncomeTax / 12; // 월 세액으로 반환
+        }
+
+        /**
          * 숫자를 한화 통화 형식으로 포맷합니다.
          * @param {number} amount - 포맷할 금액.
-         * @returns {string} 포맷된 통화 문자열 (예: "₩1,234,567").
+         * @param {string} lang - 언어 코드 ('ko-KR' 또는 'en-US').
+         * @returns {string} 포맷된 통화 문자열 (예: "₩1,234,567" 또는 "$1,234.56").
          */
-        function formatCurrency(amount) {
+        function formatCurrency(amount, lang = "ko-KR") {
+          if (lang === "en") {
+            return new Intl.NumberFormat("en-US", {
+              style: "currency",
+              currency: "KRW",
+            }).format(amount);
+          }
           return new Intl.NumberFormat("ko-KR", {
             style: "currency",
             currency: "KRW",
@@ -520,52 +719,126 @@
         function calculateNetPay() {
           const annualSalary = parseFloat(annualSalaryInput.value || 0);
           const nonTaxableIncome = parseFloat(nonTaxableIncomeInput.value || 0);
+          const businessExpenseRatio = parseFloat(
+            businessExpenseRatioInput.value || 0
+          );
           const dependents = parseInt(dependentsInput.value || 1);
+          const currentLang = htmlTag.lang; // 현재 UI 언어 가져오기
 
           // 입력 유효성 검사 및 오류 메시지 (커스텀 모달 사용)
           if (annualSalary <= 0 || isNaN(annualSalary)) {
-            showModal("연봉을 올바르게 입력해주세요.", "alert");
+            showModal(
+              translations[currentLang].validation.annualSalary,
+              "alert"
+            );
             return null;
           }
-          if (nonTaxableIncome < 0 || isNaN(nonTaxableIncome)) {
-            showModal("비과세 소득을 올바르게 입력해주세요.", "alert");
+          if (
+            currentUserType === "salaried" &&
+            (nonTaxableIncome < 0 || isNaN(nonTaxableIncome))
+          ) {
+            showModal(
+              translations[currentLang].validation.nonTaxableIncome,
+              "alert"
+            );
+            return null;
+          }
+          if (
+            currentUserType === "self-employed" &&
+            (businessExpenseRatio < 0 ||
+              businessExpenseRatio > 100 ||
+              isNaN(businessExpenseRatio))
+          ) {
+            showModal(
+              translations[currentLang].validation.businessExpenseRatio,
+              "alert"
+            );
             return null;
           }
           if (dependents < 1 || isNaN(dependents)) {
-            showModal("부양가족수는 1명 이상이어야 합니다.", "alert");
+            showModal(translations[currentLang].validation.dependents, "alert");
             return null;
           }
 
-          const monthlyGrossSalary = annualSalary / 12;
-          const monthlyNonTaxable = nonTaxableIncome;
-          // 월 과세 대상 급여 = 총 월 급여 - 월 비과세 소득
-          const monthlyTaxableSalary = monthlyGrossSalary - monthlyNonTaxable;
+          let monthlyGrossIncome = annualSalary / 12;
+          let monthlyTaxableIncome = 0;
+          let monthlyNonTaxable = 0;
+          let netBusinessIncome = 0; // 사업소득자용 순수 사업소득
 
-          // 4대 보험 계산
-          let nationalPension = monthlyTaxableSalary * NATIONAL_PENSION_RATE;
-          // 국민연금 기준소득월액 상한액 적용 (2024년 기준 590만원)
-          const NATIONAL_PENSION_MAX_MONTHLY_BASE = 5900000;
-          if (monthlyTaxableSalary > NATIONAL_PENSION_MAX_MONTHLY_BASE) {
+          let nationalPension = 0;
+          let healthInsurance = 0;
+          let longTermCareInsurance = 0;
+          let employmentInsurance = 0;
+          let incomeTax = 0;
+          let localIncomeTax = 0;
+
+          if (currentUserType === "salaried") {
+            monthlyNonTaxable = nonTaxableIncome;
+            monthlyTaxableIncome = monthlyGrossIncome - monthlyNonTaxable;
+
+            // 4대 보험 계산 (근로소득자)
             nationalPension =
-              NATIONAL_PENSION_MAX_MONTHLY_BASE * NATIONAL_PENSION_RATE;
+              monthlyTaxableIncome * NATIONAL_PENSION_RATE_SALARIED;
+            if (monthlyTaxableIncome > NATIONAL_PENSION_MAX_MONTHLY_BASE) {
+              nationalPension =
+                NATIONAL_PENSION_MAX_MONTHLY_BASE *
+                NATIONAL_PENSION_RATE_SALARIED;
+            }
+            nationalPension = Math.round(nationalPension);
+
+            healthInsurance = Math.round(
+              monthlyTaxableIncome * HEALTH_INSURANCE_RATE_SALARIED
+            );
+            longTermCareInsurance = Math.round(
+              healthInsurance * LONG_TERM_CARE_RATE_OF_HEALTH_INSURANCE
+            );
+            employmentInsurance = Math.round(
+              monthlyTaxableIncome * EMPLOYMENT_INSURANCE_RATE_SALARIED
+            );
+
+            // 소득세 및 지방소득세 (근로소득자)
+            incomeTax = Math.round(
+              getSalariedIncomeTax(monthlyTaxableIncome, dependents)
+            );
+          } else {
+            // 'self-employed'
+            // 사업소득자의 경우 비과세 소득 개념이 다소 다름 (여기서는 필요경비율로 단순화)
+            monthlyNonTaxable = 0; // 사업소득자 UI에서는 비과세 소득 대신 필요경비율 사용
+            netBusinessIncome =
+              monthlyGrossIncome * (1 - businessExpenseRatio / 100);
+            monthlyTaxableIncome = netBusinessIncome; // 사업소득자의 경우 순수 사업소득이 과세대상
+
+            // 4대 보험 계산 (사업소득자 - 지역가입자 기준 단순화)
+            // 건강보험은 소득월액 보험료로 계산 (총 7.09%를 본인이 부담하는 것으로 가정)
+            // 국민연금은 소득의 9% (본인 부담분 = 전체 요율)
+            nationalPension =
+              netBusinessIncome * NATIONAL_PENSION_RATE_SELF_EMPLOYED;
+            if (netBusinessIncome > NATIONAL_PENSION_MAX_MONTHLY_BASE) {
+              nationalPension =
+                NATIONAL_PENSION_MAX_MONTHLY_BASE *
+                NATIONAL_PENSION_RATE_SELF_EMPLOYED;
+            }
+            nationalPension = Math.round(nationalPension);
+
+            healthInsurance = Math.round(
+              netBusinessIncome * HEALTH_INSURANCE_RATE_SELF_EMPLOYED
+            );
+            longTermCareInsurance = Math.round(
+              healthInsurance * LONG_TERM_CARE_RATE_OF_HEALTH_INSURANCE
+            );
+            employmentInsurance = Math.round(
+              netBusinessIncome * EMPLOYMENT_INSURANCE_RATE_SELF_EMPLOYED
+            ); // 0으로 설정
+
+            // 소득세 및 지방소득세 (사업소득자 - 연간 소득세율 적용)
+            incomeTax = Math.round(
+              getSelfEmployedIncomeTax(
+                annualSalary * (1 - businessExpenseRatio / 100)
+              )
+            );
           }
-          nationalPension = Math.round(nationalPension); // 원 단위로 반올림
 
-          const healthInsurance = Math.round(
-            monthlyTaxableSalary * HEALTH_INSURANCE_RATE
-          );
-          const longTermCareInsurance = Math.round(
-            healthInsurance * LONG_TERM_CARE_RATE_OF_HEALTH_INSURANCE
-          );
-          const employmentInsurance = Math.round(
-            monthlyTaxableSalary * EMPLOYMENT_INSURANCE_RATE
-          );
-
-          // 소득세 및 지방소득세
-          const incomeTax = Math.round(
-            getIncomeTax(monthlyTaxableSalary, dependents)
-          );
-          const localIncomeTax = Math.round(incomeTax * 0.1);
+          localIncomeTax = Math.round(incomeTax * 0.1);
 
           // 총 공제액
           const totalDeductions =
@@ -577,31 +850,78 @@
             localIncomeTax;
 
           // 실수령액
-          const netMonthlyPay = monthlyGrossSalary - totalDeductions;
+          const netMonthlyPay = monthlyGrossIncome - totalDeductions;
 
           // 결과 표시
-          displayMonthlyGross.textContent = formatCurrency(monthlyGrossSalary);
-          displayMonthlyTaxable.textContent =
-            formatCurrency(monthlyTaxableSalary);
-          displayMonthlyNonTaxable.textContent =
-            formatCurrency(monthlyNonTaxable);
-          displayNationalPension.textContent = formatCurrency(nationalPension);
-          displayHealthInsurance.textContent = formatCurrency(healthInsurance);
-          displayLongTermCare.textContent = formatCurrency(
-            longTermCareInsurance
+          displayMonthlyGross.textContent = formatCurrency(
+            monthlyGrossIncome,
+            currentLang
           );
-          displayEmploymentInsurance.textContent =
-            formatCurrency(employmentInsurance);
-          displayIncomeTax.textContent = formatCurrency(incomeTax);
-          displayLocalIncomeTax.textContent = formatCurrency(localIncomeTax);
-          displayNetPay.textContent = formatCurrency(netMonthlyPay);
+          displayNationalPension.textContent = formatCurrency(
+            nationalPension,
+            currentLang
+          );
+          displayHealthInsurance.textContent = formatCurrency(
+            healthInsurance,
+            currentLang
+          );
+          displayLongTermCare.textContent = formatCurrency(
+            longTermCareInsurance,
+            currentLang
+          );
+          displayEmploymentInsurance.textContent = formatCurrency(
+            employmentInsurance,
+            currentLang
+          );
+          displayIncomeTax.textContent = formatCurrency(incomeTax, currentLang);
+          displayLocalIncomeTax.textContent = formatCurrency(
+            localIncomeTax,
+            currentLang
+          );
+          displayNetPay.textContent = formatCurrency(
+            netMonthlyPay,
+            currentLang
+          );
+
+          // 유형별 결과 표시 전환
+          if (currentUserType === "salaried") {
+            displayMonthlyTaxable.textContent = formatCurrency(
+              monthlyTaxableIncome,
+              currentLang
+            );
+            displayMonthlyNonTaxable.textContent = formatCurrency(
+              monthlyNonTaxable,
+              currentLang
+            );
+            displayTaxableLabel.classList.remove("hidden");
+            displayNonTaxableLabel.classList.remove("hidden");
+            displayNetBusinessIncomeLabel.classList.add("hidden");
+          } else {
+            displayMonthlyTaxable.textContent = formatCurrency(
+              netBusinessIncome,
+              currentLang
+            ); // 사업소득자는 '월 과세 대상 급여' 대신 '월 순수 사업소득'으로 간주
+            displayNetBusinessIncome.textContent = formatCurrency(
+              netBusinessIncome,
+              currentLang
+            ); // 별도 표시
+            displayMonthlyNonTaxable.textContent = formatCurrency(
+              monthlyNonTaxable,
+              currentLang
+            ); // 0원 표시
+            displayTaxableLabel.classList.add("hidden"); // 숨기거나 텍스트 변경 필요
+            displayNonTaxableLabel.classList.add("hidden"); // 숨기거나 텍스트 변경 필요
+            displayNetBusinessIncomeLabel.classList.remove("hidden");
+          }
 
           return {
             annualSalary,
             nonTaxableIncome,
+            businessExpenseRatio, // Added for scenario saving
             dependents,
-            monthlyGrossSalary,
-            monthlyTaxableSalary,
+            currentUserType, // Added for scenario saving
+            monthlyGrossIncome,
+            monthlyTaxableIncome,
             monthlyNonTaxable,
             nationalPension,
             healthInsurance,
@@ -670,8 +990,13 @@
          */
         function saveScenario() {
           const scenarioName = scenarioNameInput.value.trim();
+          const currentLang = htmlTag.lang;
+
           if (!scenarioName) {
-            showModal("시나리오 이름을 입력해주세요.", "alert");
+            showModal(
+              translations[currentLang].validation.scenarioName,
+              "alert"
+            );
             return;
           }
 
@@ -679,7 +1004,7 @@
           if (!calculationResult) {
             // 유효하지 않은 입력으로 계산 실패 시
             showModal(
-              "유효한 계산 결과가 없습니다. 연봉을 올바르게 입력해주세요.",
+              translations[currentLang].validation.invalidCalculation,
               "alert"
             );
             return;
@@ -694,6 +1019,7 @@
             name: scenarioName,
             timestamp: new Date().toISOString(),
             ...calculationResult,
+            userType: currentUserType, // 시나리오에 사용자 유형 저장
           };
 
           // 동일한 이름의 시나리오가 이미 존재하는지 확인
@@ -704,13 +1030,22 @@
             // 기존 시나리오 업데이트
             scenarios[existingIndex] = newScenario;
             showModal(
-              `'${scenarioName}' 시나리오가 업데이트되었습니다.`,
+              translations[currentLang].scenario.updated.replace(
+                "{name}",
+                scenarioName
+              ),
               "alert"
             );
           } else {
             // 새 시나리오 추가
             scenarios.push(newScenario);
-            showModal(`'${scenarioName}' 시나리오가 저장되었습니다.`, "alert");
+            showModal(
+              translations[currentLang].scenario.saved.replace(
+                "{name}",
+                scenarioName
+              ),
+              "alert"
+            );
           }
 
           localStorage.setItem("netPayScenarios", JSON.stringify(scenarios));
@@ -729,8 +1064,20 @@
           if (index >= 0 && index < scenarios.length) {
             const scenario = scenarios[index];
             annualSalaryInput.value = scenario.annualSalary;
-            nonTaxableIncomeInput.value = scenario.nonTaxableIncome;
+            nonTaxableIncomeInput.value = scenario.nonTaxableIncome || 0; // null/undefined 방지
+            businessExpenseRatioInput.value =
+              scenario.businessExpenseRatio || 0; // null/undefined 방지
             dependentsInput.value = scenario.dependents;
+
+            // 사용자 유형 로드 및 UI 업데이트
+            currentUserType = scenario.userType || "salaried"; // 기본값 설정
+            if (currentUserType === "salaried") {
+              userTypeSalaried.checked = true;
+            } else {
+              userTypeSelfEmployed.checked = true;
+            }
+            toggleUserTypeFields(); // UI 필드 업데이트
+
             calculateNetPay(); // 다시 계산 및 표시
             scenarioNameInput.value = scenario.name; // 시나리오 이름 입력 필드에 채우기
             window.scrollTo({ top: 0, behavior: "smooth" }); // 페이지 상단으로 스크롤
@@ -742,8 +1089,9 @@
          * @param {number} index - 삭제할 시나리오의 인덱스.
          */
         function deleteScenario(index) {
+          const currentLang = htmlTag.lang;
           showModal(
-            "정말로 이 시나리오를 삭제하시겠습니까?",
+            translations[currentLang].scenario.confirmDelete,
             "confirm",
             (result) => {
               if (result) {
@@ -757,7 +1105,7 @@
                   JSON.stringify(scenarios)
                 );
                 renderScenarios(); // 목록 다시 렌더링
-                showModal("시나리오가 삭제되었습니다.", "alert");
+                showModal(translations[currentLang].scenario.deleted, "alert");
               }
             }
           );
@@ -771,8 +1119,11 @@
             localStorage.getItem("netPayScenarios") || "[]"
           );
           scenarioList.innerHTML = ""; // 현재 목록 지우기
+          const currentLang = htmlTag.lang;
 
           if (scenarios.length === 0) {
+            noScenariosMessage.textContent =
+              translations[currentLang].scenario.noScenarios;
             noScenariosMessage.style.display = "block"; // 시나리오 없음 메시지 표시
           } else {
             noScenariosMessage.style.display = "none"; // 메시지 숨김
@@ -785,28 +1136,53 @@
               const scenarioCard = document.createElement("div");
               scenarioCard.className =
                 "bg-white p-4 rounded-md shadow-sm border border-gray-200 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3";
+
+              const displayUserType =
+                scenario.userType === "salaried"
+                  ? translations[currentLang].salariedOption
+                  : translations[currentLang].selfEmployedOption;
+
               scenarioCard.innerHTML = `
                             <div>
                                 <h4 class="font-bold text-gray-800 text-lg">${
                                   scenario.name
                                 }</h4>
                                 <p class="text-sm text-gray-600">
-                                    연봉: ${formatCurrency(
-                                      scenario.annualSalary
-                                    )} |
-                                    월 실수령: <span class="font-semibold text-blue-700">${formatCurrency(
-                                      scenario.netMonthlyPay
-                                    )}</span>
+                                    ${
+                                      translations[currentLang]
+                                        .annualSalaryLabel
+                                    }: ${formatCurrency(
+                scenario.annualSalary,
+                currentLang
+              )} |
+                                    ${
+                                      translations[currentLang].monthlyNetPay
+                                    }: <span class="font-semibold text-blue-700">${formatCurrency(
+                scenario.netMonthlyPay,
+                currentLang
+              )}</span> |
+                                    ${
+                                      translations[currentLang]
+                                        .userTypeLabelShort
+                                    }: ${displayUserType}
                                 </p>
-                                <p class="text-xs text-gray-500 mt-1">저장일: ${new Date(
-                                  scenario.timestamp
-                                ).toLocaleDateString("ko-KR")} ${new Date(
+                                <p class="text-xs text-gray-500 mt-1">${
+                                  translations[currentLang].scenario.savedDate
+                                }: ${new Date(
                 scenario.timestamp
-              ).toLocaleTimeString("ko-KR")}</p>
+              ).toLocaleDateString(
+                currentLang === "ko" ? "ko-KR" : "en-US"
+              )} ${new Date(scenario.timestamp).toLocaleTimeString(
+                currentLang === "ko" ? "ko-KR" : "en-US"
+              )}</p>
                             </div>
                             <div class="flex flex-row gap-2">
-                                <button data-index="${index}" class="load-scenario-btn bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold py-2 px-3 rounded-md transition duration-300">불러오기</button>
-                                <button data-index="${index}" class="delete-scenario-btn bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-2 px-3 rounded-md transition duration-300">삭제</button>
+                                <button data-index="${index}" class="load-scenario-btn bg-blue-500 hover:bg-blue-600 text-white text-sm font-semibold py-2 px-3 rounded-md transition duration-300">${
+                translations[currentLang].scenario.loadBtn
+              }</button>
+                                <button data-index="${index}" class="delete-scenario-btn bg-red-500 hover:bg-red-600 text-white text-sm font-semibold py-2 px-3 rounded-md transition duration-300">${
+                translations[currentLang].scenario.deleteBtn
+              }</button>
                             </div>
                         `;
               scenarioList.appendChild(scenarioCard);
@@ -830,6 +1206,409 @@
           }
         }
 
+        // --- 사용자 유형에 따른 입력 필드 토글 ---
+        function toggleUserTypeFields() {
+          const currentLang = htmlTag.lang;
+          if (userTypeSalaried.checked) {
+            currentUserType = "salaried";
+            nonTaxableIncomeGroup.classList.remove("hidden");
+            businessExpenseRatioGroup.classList.add("hidden");
+            annualSalaryLabel.textContent =
+              translations[currentLang].annualSalaryLabelSalaried;
+            displayGrossLabel.textContent =
+              translations[currentLang].displayGrossLabelSalaried;
+            displayTaxableLabel.textContent =
+              translations[currentLang].displayTaxableLabelSalaried;
+            displayNonTaxableLabel.textContent =
+              translations[currentLang].displayNonTaxableLabelSalaried;
+            document
+              .getElementById("itSalariedInfo")
+              .classList.remove("hidden");
+            document
+              .getElementById("itSelfEmployedInfo")
+              .classList.add("hidden");
+          } else {
+            currentUserType = "self-employed";
+            nonTaxableIncomeGroup.classList.add("hidden");
+            businessExpenseRatioGroup.classList.remove("hidden");
+            annualSalaryLabel.textContent =
+              translations[currentLang].annualSalaryLabelSelfEmployed;
+            displayGrossLabel.textContent =
+              translations[currentLang].displayGrossLabelSelfEmployed;
+            displayTaxableLabel.textContent =
+              translations[currentLang].displayTaxableLabelSelfEmployed;
+            displayNonTaxableLabel.textContent =
+              translations[currentLang].displayNonTaxableLabelSelfEmployed;
+            document.getElementById("itSalariedInfo").classList.add("hidden");
+            document
+              .getElementById("itSelfEmployedInfo")
+              .classList.remove("hidden");
+          }
+          // 계산을 한 번 더 실행하여 UI를 업데이트합니다.
+          calculateNetPay();
+        }
+
+        // --- 다국어 지원 (Translations) ---
+        const translations = {
+          ko: {
+            pageTitle:
+              "한국 연봉/월급 실수령액 계산기 | NetPayKorea - 4대보험 & 소득세 자동 계산",
+            mainTitle: "한국 연봉/월급 실수령액 계산기",
+            subTitle:
+              "대한민국 4대 보험 및 소득세를 반영한 정확한 실수령액을 간편하게 확인하고,",
+            scenarioStrongText: "다양한 시나리오를 저장 및 비교",
+            inputSectionTitle: "입력 정보",
+            userTypeLabel: "당신은 누구인가요?",
+            salariedOption: "근로소득자",
+            selfEmployedOption: "사업소득자",
+            annualSalaryLabel: "연봉 (세전, 원)", // Default
+            annualSalaryLabelSalaried: "연봉 (세전, 원)",
+            annualSalaryLabelSelfEmployed: "총 수입 (세전, 원)",
+            nonTaxableIncomeLabel: "비과세 소득 (월, 원)",
+            nonTaxableIncomeDesc:
+              "예: 식대 (월 20만원까지), 자가운전보조금 등. 비과세 항목은 세금이 부과되지 않습니다.",
+            businessExpenseRatioLabel: "필요경비율 (%)",
+            businessExpenseRatioDesc:
+              "사업소득의 필요경비를 비율로 입력하세요 (예: 50 입력 시 50% 공제).",
+            dependentsLabel: "부양가족수 (본인 포함)",
+            dependentsDesc:
+              "소득세 계산 시 적용됩니다. 일반적으로 본인 포함입니다.",
+            calculateBtn: "실수령액 계산하기",
+            resultSectionTitle: "계산 결과 (월 기준)",
+            displayGrossLabel: "총 월 급여 (세전):",
+            displayGrossLabelSalaried: "총 월 급여 (세전):",
+            displayGrossLabelSelfEmployed: "총 월 수입 (세전):",
+            displayTaxableLabel: "월 과세 대상 급여:",
+            displayTaxableLabelSalaried: "월 과세 대상 급여:",
+            displayTaxableLabelSelfEmployed: "월 과세 대상 수입:",
+            displayNonTaxableLabel: "월 비과세 소득:",
+            displayNonTaxableLabelSalaried: "월 비과세 소득:",
+            displayNonTaxableLabelSelfEmployed: "월 비과세 소득:",
+            displayNetBusinessIncomeLabel: "월 순수 사업소득 (경비 공제 후):",
+            npLabel: "국민연금:",
+            hiLabel: "건강보험:",
+            ltcLabel: "장기요양보험:",
+            eiLabel: "고용보험:",
+            itLabel: "소득세:",
+            litLabel: "지방소득세:",
+            netPayLabel: "월 예상 실수령액:",
+            scenarioSectionTitle: "나의 시나리오 저장 및 비교",
+            scenarioDescription:
+              "현재 계산된 결과를 시나리오로 저장하고, 필요할 때 불러와 비교해 보세요. 브라우저에 저장됩니다.",
+            scenarioPlaceholder: "시나리오 이름 (예: 현재 급여, 이직 제안)",
+            saveScenarioBtn: "시나리오 저장",
+            noScenariosMessage: "저장된 시나리오가 없습니다.",
+            whyNetPayKoreaTitle: "NetPayKorea가 특별한 이유",
+            whyNetPayKoreaP1:
+              "시중에 많은 연봉/월급 실수령액 계산기가 있지만, NetPayKorea는 여러분의 <strong>복잡한 고민을 해결</strong>하기 위해 태어났습니다. 단순히 한 번 계산하고 마는 것이 아니라, <strong>다양한 '가정'을 시나리오로 저장</strong>하여 '연봉이 5천만원으로 오르면 실수령액은 얼마일까?', '성과급 1천만원을 받으면 세금은 얼마나 늘어날까?' 와 같은 질문에 대한 답을 <strong>즉시 비교</strong>할 수 있습니다.",
+            whyNetPayKoreaP2:
+              "복잡한 세법이나 4대 보험 요율을 일일이 찾아볼 필요 없이, 필요한 정보를 입력하기만 하면 <strong>가장 최신 기준을 반영하여 정확한 실수령액을 계산</strong>해 드립니다. 이 모든 기능은 <strong>여러분 브라우저의 로컬 저장소에 안전하게 보관</strong>되므로, 언제든지 다시 접속하여 중단했던 시점부터 이어서 사용할 수 있습니다.",
+            deductionInfoTitle: "4대 보험 및 세금 안내 (2024년 기준)",
+            npInfo:
+              '✅ <strong>국민연금:</strong> 월 과세소득의 4.5% (사업장 가입자의 경우 사용자 4.5% + 본인 4.5% = 총 9%. 계산기는 본인 부담분만 적용)<br><span class="text-sm text-gray-500">※ 기준소득월액 상한액(2024년 590만원)이 있어 일정 급여 이상은 동일하게 적용됩니다.</span>',
+            hiInfo:
+              "✅ <strong>건강보험:</strong> 월 과세소득의 3.545% (사업장 가입자의 경우 사용자 3.545% + 본인 3.545% = 총 7.09%)",
+            ltcInfo:
+              "✅ <strong>장기요양보험:</strong> 건강보험료의 12.95% (건강보험료에 비례하여 부과)",
+            eiInfo:
+              "✅ <strong>고용보험:</strong> 월 과세소득의 0.8% (실업급여 보험료율, 사업장 가입자 기준)",
+            itSalariedInfo:
+              '✅ <strong>소득세 (근로소득):</strong> 국세청 간이세액표 기준 적용 (부양가족수 및 소득 구간별 차등 적용)<br><span class="text-sm text-gray-500">※ 본 계산기는 복잡한 간이세액표를 최대한 단순화하여 적용합니다. 실제 세금과 차이가 있을 수 있습니다. 정확한 세금은 국세청 자료를 참고하세요.</span>',
+            itSelfEmployedInfo:
+              "✅ <strong>소득세 (사업소득):</strong> 사업소득세는 종합소득세율이 적용되며, 필요경비 공제 및 부양가족 수에 따른 소득공제가 이루어집니다. 본 계산기는 간이화된 로직을 따르며, 실제 세금과 차이가 있을 수 있습니다.",
+            litInfo: "✅ <strong>지방소득세:</strong> 소득세의 10%",
+            adPlaceholderText: "여기에 광고가 표시됩니다 (Google AdSense)",
+            footerCopyright: "&copy; 2024 NetPayKorea. 모든 권리 보유.",
+            footerDisclaimer:
+              "본 계산 결과는 추정치이며, 실제와 다를 수 있습니다. 정확한 정보는 관련 기관을 통해 확인해주세요.",
+            modalConfirm: "확인",
+            modalCancel: "취소",
+            validation: {
+              annualSalary: "연봉을 올바르게 입력해주세요.",
+              nonTaxableIncome: "비과세 소득을 올바르게 입력해주세요.",
+              businessExpenseRatio:
+                "필요경비율을 0~100 사이로 올바르게 입력해주세요.",
+              dependents: "부양가족수는 1명 이상이어야 합니다.",
+              scenarioName: "시나리오 이름을 입력해주세요.",
+              invalidCalculation:
+                "유효한 계산 결과가 없습니다. 연봉을 올바르게 입력해주세요.",
+            },
+            scenario: {
+              saved: "'{name}' 시나리오가 저장되었습니다.",
+              updated: "'{name}' 시나리오가 업데이트되었습니다.",
+              confirmDelete: "정말로 이 시나리오를 삭제하시겠습니까?",
+              deleted: "시나리오가 삭제되었습니다.",
+              loadBtn: "불러오기",
+              deleteBtn: "삭제",
+              noScenarios: "저장된 시나리오가 없습니다.",
+              savedDate: "저장일",
+              monthlyNetPay: "월 실수령",
+              userTypeLabelShort: "유형",
+            },
+          },
+          en: {
+            pageTitle:
+              "Korea Net Pay Calculator | NetPayKorea - 4 Major Insurances & Income Tax Auto Calculation",
+            mainTitle: "Korea Annual/Monthly Net Pay Calculator",
+            subTitle:
+              "Easily check your actual net income by reflecting South Korea's 4 major insurances and income tax, and",
+            scenarioStrongText: "save and compare various scenarios",
+            inputSectionTitle: "Input Information",
+            userTypeLabel: "Who are you?",
+            salariedOption: "Salaried Worker",
+            selfEmployedOption: "Self-Employed",
+            annualSalaryLabel: "Annual Salary (Before Tax, KRW)", // Default
+            annualSalaryLabelSalaried: "Annual Salary (Before Tax, KRW)",
+            annualSalaryLabelSelfEmployed: "Gross Revenue (Before Tax, KRW)",
+            nonTaxableIncomeLabel: "Non-taxable Income (Monthly, KRW)",
+            nonTaxableIncomeDesc:
+              "E.g., Meal allowance (up to ₩200,000/month), car allowance, etc. Non-taxable items are not subject to tax.",
+            businessExpenseRatioLabel: "Business Expense Ratio (%)",
+            businessExpenseRatioDesc:
+              "Enter the percentage of necessary expenses for business income (e.g., enter 50 for 50% deduction).",
+            dependentsLabel: "Number of Dependents (Including Self)",
+            dependentsDesc:
+              "Applied when calculating income tax. Generally includes yourself.",
+            calculateBtn: "Calculate Net Pay",
+            resultSectionTitle: "Calculation Results (Monthly)",
+            displayGrossLabel: "Total Monthly Gross Income (Before Tax):",
+            displayGrossLabelSalaried:
+              "Total Monthly Gross Salary (Before Tax):",
+            displayGrossLabelSelfEmployed:
+              "Total Monthly Gross Revenue (Before Tax):",
+            displayTaxableLabel: "Monthly Taxable Income:",
+            displayTaxableLabelSalaried: "Monthly Taxable Salary:",
+            displayTaxableLabelSelfEmployed: "Monthly Taxable Revenue:",
+            displayNonTaxableLabel: "Monthly Non-taxable Income:",
+            displayNonTaxableLabelSalaried: "Monthly Non-taxable Income:",
+            displayNonTaxableLabelSelfEmployed: "Monthly Non-taxable Income:",
+            displayNetBusinessIncomeLabel:
+              "Monthly Net Business Income (After Expenses):",
+            npLabel: "National Pension:",
+            hiLabel: "Health Insurance:",
+            ltcLabel: "Long-Term Care Insurance:",
+            eiLabel: "Employment Insurance:",
+            itLabel: "Income Tax:",
+            litLabel: "Local Income Tax:",
+            netPayLabel: "Estimated Monthly Net Pay:",
+            scenarioSectionTitle: "Save & Compare My Scenarios",
+            scenarioDescription:
+              "Save your current calculation results as scenarios and load them to compare when needed. Data is stored in your browser.",
+            scenarioPlaceholder:
+              "Scenario Name (e.g., Current Salary, New Job Offer)",
+            saveScenarioBtn: "Save Scenario",
+            noScenariosMessage: "No saved scenarios.",
+            whyNetPayKoreaTitle: "Why NetPayKorea is Special",
+            whyNetPayKoreaP1:
+              "While there are many annual/monthly net pay calculators available, NetPayKorea was born to <strong>solve your complex concerns</strong>. Instead of just calculating once and being done, you can <strong>save various 'assumptions' as scenarios</strong> and instantly compare answers to questions like 'What would my net income be if my annual salary increased to 50 million KRW?', or 'How much more tax would I pay if I receive a 10 million KRW bonus?'.",
+            whyNetPayKoreaP2:
+              "Without needing to look up complex tax laws or 4 major insurance rates, you can simply enter the necessary information, and we will <strong>accurately calculate your net income reflecting the latest standards</strong>. All these features are <strong>securely stored in your browser's local storage</strong>, so you can always pick up where you left off when you revisit the site.",
+            deductionInfoTitle:
+              "4 Major Insurances and Tax Information (As of 2024)",
+            npInfo:
+              '✅ <strong>National Pension:</strong> 4.5% of monthly taxable income (For workplace subscribers, employer 4.5% + employee 4.5% = total 9%. The calculator applies only the employee\'s share).<br><span class="text-sm text-gray-500">※ There is a maximum monthly income base (₩5.9 million in 2024), so the same rate applies above a certain income.</span>',
+            hiInfo:
+              "✅ <strong>Health Insurance:</strong> 3.545% of monthly taxable income (For workplace subscribers, employer 3.545% + employee 3.545% = total 7.09%).",
+            ltcInfo:
+              "✅ <strong>Long-Term Care Insurance:</strong> 12.95% of health insurance premium (Proportionally applied to health insurance premium).",
+            eiInfo:
+              "✅ <strong>Employment Insurance:</strong> 0.8% of monthly taxable income (Unemployment benefit premium rate, based on workplace subscriber).",
+            itSalariedInfo:
+              '✅ <strong>Income Tax (Salaried Income):</strong> Applied based on National Tax Service simplified tax table (varies by number of dependents and income bracket).<br><span class="text-sm text-gray-500">※ This calculator simplifies the complex simplified tax table as much as possible. Actual taxes may differ. Please refer to the National Tax Service for accurate tax information.</span>',
+            itSelfEmployedInfo:
+              "✅ <strong>Income Tax (Business Income):</strong> Business income tax applies progressive comprehensive income tax rates, with deductions for necessary expenses and dependents. This calculator follows a simplified logic, and actual taxes may differ.",
+            litInfo: "✅ <strong>Local Income Tax:</strong> 10% of income tax.",
+            adPlaceholderText:
+              "Advertisement will be displayed here (Google AdSense)",
+            footerCopyright: "&copy; 2024 NetPayKorea. All rights reserved.",
+            footerDisclaimer:
+              "This calculation result is an estimate and may differ from the actual amount. Please verify accurate information through relevant institutions.",
+            modalConfirm: "Confirm",
+            modalCancel: "Cancel",
+            validation: {
+              annualSalary: "Please enter a valid annual income.",
+              nonTaxableIncome: "Please enter a valid non-taxable income.",
+              businessExpenseRatio:
+                "Please enter a valid business expense ratio between 0 and 100.",
+              dependents: "Number of dependents must be 1 or more.",
+              scenarioName: "Please enter a scenario name.",
+              invalidCalculation:
+                "No valid calculation result. Please enter a valid annual income.",
+            },
+            scenario: {
+              saved: "'{name}' scenario has been saved.",
+              updated: "'{name}' scenario has been updated.",
+              confirmDelete: "Are you sure you want to delete this scenario?",
+              deleted: "Scenario has been deleted.",
+              loadBtn: "Load",
+              deleteBtn: "Delete",
+              noScenarios: "No saved scenarios.",
+              savedDate: "Saved Date",
+              monthlyNetPay: "Monthly Net Pay",
+              userTypeLabelShort: "Type",
+            },
+          },
+        };
+
+        function updateUIForLanguage(lang) {
+          // Update HTML lang attribute
+          htmlTag.lang = lang;
+
+          // Update page title
+          document.getElementById("pageTitle").textContent =
+            translations[lang].pageTitle;
+
+          // Update language buttons styling
+          if (lang === "ko") {
+            langKoBtn.classList.remove("bg-gray-300", "text-gray-700");
+            langKoBtn.classList.add("bg-blue-500", "text-white");
+            langEnBtn.classList.remove("bg-blue-500", "text-white");
+            langEnBtn.classList.add("bg-gray-300", "text-gray-700");
+          } else {
+            langEnBtn.classList.remove("bg-gray-300", "text-gray-700");
+            langEnBtn.classList.add("bg-blue-500", "text-white");
+            langKoBtn.classList.remove("bg-blue-500", "text-white");
+            langKoBtn.classList.add("bg-gray-300", "text-gray-700");
+          }
+
+          // Main content
+          document.getElementById("mainTitle").textContent =
+            translations[lang].mainTitle;
+          document.getElementById("subTitle").innerHTML =
+            translations[lang].subTitle +
+            `<strong class="text-blue-600"><span id="scenarioStrongText">${translations[lang].scenarioStrongText}</span></strong>`; // Reconstruct for strong tag
+          document.getElementById("inputSectionTitle").textContent =
+            translations[lang].inputSectionTitle;
+          document.getElementById("userTypeLabel").textContent =
+            translations[lang].userTypeLabel;
+          document.getElementById("salariedOption").textContent =
+            translations[lang].salariedOption;
+          document.getElementById("selfEmployedOption").textContent =
+            translations[lang].selfEmployedOption;
+          document.getElementById("annualSalaryLabel").textContent =
+            currentUserType === "salaried"
+              ? translations[lang].annualSalaryLabelSalaried
+              : translations[lang].annualSalaryLabelSelfEmployed; // Dynamic label
+          document.getElementById("nonTaxableIncomeLabel").textContent =
+            translations[lang].nonTaxableIncomeLabel;
+          document.getElementById("nonTaxableIncomeDesc").textContent =
+            translations[lang].nonTaxableIncomeDesc;
+          document.getElementById("businessExpenseRatioLabel").textContent =
+            translations[lang].businessExpenseRatioLabel;
+          document.getElementById("businessExpenseRatioDesc").textContent =
+            translations[lang].businessExpenseRatioDesc;
+          document.getElementById("dependentsLabel").textContent =
+            translations[lang].dependentsLabel;
+          document.getElementById("dependentsDesc").textContent =
+            translations[lang].dependentsDesc;
+          document.getElementById("calculateBtn").textContent =
+            translations[lang].calculateBtn;
+
+          // Results section
+          document.getElementById("resultSectionTitle").textContent =
+            translations[lang].resultSectionTitle;
+          document.getElementById("displayGrossLabel").textContent =
+            currentUserType === "salaried"
+              ? translations[lang].displayGrossLabelSalaried
+              : translations[lang].displayGrossLabelSelfEmployed;
+          document.getElementById("displayTaxableLabel").textContent =
+            currentUserType === "salaried"
+              ? translations[lang].displayTaxableLabelSalaried
+              : translations[lang].displayTaxableLabelSelfEmployed;
+          document.getElementById("displayNonTaxableLabel").textContent =
+            currentUserType === "salaried"
+              ? translations[lang].displayNonTaxableLabelSalaried
+              : translations[lang].displayNonTaxableLabelSelfEmployed;
+          document.getElementById("displayNetBusinessIncomeLabel").textContent =
+            translations[lang].displayNetBusinessIncomeLabel;
+
+          document.getElementById("npLabel").textContent =
+            translations[lang].npLabel;
+          document.getElementById("hiLabel").textContent =
+            translations[lang].hiLabel;
+          document.getElementById("ltcLabel").textContent =
+            translations[lang].ltcLabel;
+          document.getElementById("eiLabel").textContent =
+            translations[lang].eiLabel;
+          document.getElementById("itLabel").textContent =
+            translations[lang].itLabel;
+          document.getElementById("litLabel").textContent =
+            translations[lang].litLabel;
+          document.getElementById("netPayLabel").textContent =
+            translations[lang].netPayLabel;
+
+          // Scenario section
+          document.getElementById("scenarioSectionTitle").textContent =
+            translations[lang].scenarioSectionTitle;
+          document.getElementById("scenarioDescription").textContent =
+            translations[lang].scenarioDescription;
+          document.getElementById("scenarioName").placeholder =
+            translations[lang].scenarioPlaceholder;
+          document.getElementById("saveScenarioBtn").textContent =
+            translations[lang].saveScenarioBtn;
+          document.getElementById("noScenariosMessage").textContent =
+            translations[lang].noScenariosMessage;
+
+          // Explanation section
+          document.getElementById("whyNetPayKoreaTitle").textContent =
+            translations[lang].whyNetPayKoreaTitle;
+          document.getElementById("whyNetPayKoreaP1").innerHTML =
+            translations[lang].whyNetPayKoreaP1;
+          document.getElementById("whyNetPayKoreaP2").innerHTML =
+            translations[lang].whyNetPayKoreaP2;
+          document.getElementById("deductionInfoTitle").textContent =
+            translations[lang].deductionInfoTitle;
+          document.getElementById("npInfo").innerHTML =
+            translations[lang].npInfo;
+          document.getElementById("hiInfo").innerHTML =
+            translations[lang].hiInfo;
+          document.getElementById("ltcInfo").innerHTML =
+            translations[lang].ltcInfo;
+          document.getElementById("eiInfo").innerHTML =
+            translations[lang].eiInfo;
+          document.getElementById("itSalariedInfo").innerHTML =
+            translations[lang].itSalariedInfo;
+          document.getElementById("itSelfEmployedInfo").innerHTML =
+            translations[lang].itSelfEmployedInfo;
+          document.getElementById("litInfo").innerHTML =
+            translations[lang].litInfo;
+
+          // AdSense placeholder
+          document.getElementById("adPlaceholderText").textContent =
+            translations[lang].adPlaceholderText;
+
+          // Footer
+          document.getElementById("footerCopyright").textContent =
+            translations[lang].footerCopyright;
+          document.getElementById("footerDisclaimer").textContent =
+            translations[lang].footerDisclaimer;
+
+          // Modal
+          document.getElementById("modalConfirmBtn").textContent =
+            translations[lang].modalConfirm;
+          document.getElementById("modalCancelBtn").textContent =
+            translations[lang].modalCancel;
+
+          // Re-render scenarios to update their text
+          renderScenarios();
+        }
+
+        // Event listener for language buttons
+        langKoBtn.addEventListener("click", () => {
+          localStorage.setItem("netPayLang", "ko");
+          updateUIForLanguage("ko");
+          calculateNetPay(); // Recalculate to ensure currency formatting is correct
+        });
+        langEnBtn.addEventListener("click", () => {
+          localStorage.setItem("netPayLang", "en");
+          updateUIForLanguage("en");
+          calculateNetPay(); // Recalculate to ensure currency formatting is correct
+        });
+
+        // Event listener for user type radio buttons
+        userTypeSalaried.addEventListener("change", toggleUserTypeFields);
+        userTypeSelfEmployed.addEventListener("change", toggleUserTypeFields);
+
         // 이벤트 리스너 등록
         calculateBtn.addEventListener("click", calculateNetPay);
         saveScenarioBtn.addEventListener("click", saveScenario);
@@ -841,16 +1620,23 @@
         nonTaxableIncomeInput.addEventListener("input", () => {
           if (nonTaxableIncomeInput.value.trim() !== "") calculateNetPay();
         });
+        businessExpenseRatioInput.addEventListener("input", () => {
+          if (businessExpenseRatioInput.value.trim() !== "") calculateNetPay();
+        });
         dependentsInput.addEventListener("input", () => {
           if (dependentsInput.value.trim() !== "") calculateNetPay();
         });
 
         // 초기 시나리오 로드 및 계산
+        const savedLang = localStorage.getItem("netPayLang") || "ko";
+        updateUIForLanguage(savedLang); // Apply saved language or default to Korean
         renderScenarios();
+
         // 페이지 로드 시 초기 값으로 계산 수행 (연봉 입력 필드가 비어있지 않은 경우에만 기본값 설정)
         if (!annualSalaryInput.value) {
           annualSalaryInput.value = 40000000; // 예시 기본 연봉 설정
         }
+        toggleUserTypeFields(); // Initial toggle to set correct labels and fields
         calculateNetPay(); // 초기 계산 수행
       });
     </script>
